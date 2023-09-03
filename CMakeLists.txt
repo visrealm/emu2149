@@ -1,9 +1,18 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.22)
 
-if(MSVC)
-  set(CMAKE_C_FLAGS "/Ox /W3 /wd4996")
-else()
-  set(CMAKE_C_FLAGS "-O3 -Wall")
+project(emu2149)
+
+if (NOT BUILD_SHARED_LIBS)
+ add_definitions(-DVR_EMU_2149_STATIC)
 endif()
 
-add_library(emu2149 STATIC emu2149.c)
+add_library(emu2149)
+
+if (WIN32)
+  if (BUILD_SHARED_LIBS)
+     add_definitions(-DVR_EMU_2149_COMPILING_DLL)
+   endif()
+endif()
+
+target_sources(emu2149 PRIVATE emu2149.c PUBLIC emu2149.h)
+target_include_directories (emu2149 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

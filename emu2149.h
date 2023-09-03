@@ -4,16 +4,27 @@
 
 #include <stdint.h>
 
+
+#if __EMSCRIPTEN__
+#include <emscripten.h>
+#define VR_EMU_2149_DLLEXPORT EMSCRIPTEN_KEEPALIVE
+#elif VR_EMU_2149_COMPILING_DLL
+#define VR_EMU_2149_DLLEXPORT __declspec(dllexport)
+#elif defined WIN32 && !defined VR_EMU_2149_STATIC
+#define VR_EMU_2149_DLLEXPORT __declspec(dllimport)
+#else
+#ifdef __cplusplus
+#define VR_EMU_2149_DLLEXPORT extern "C"
+#else
+#define VR_EMU_2149_DLLEXPORT extern
+#endif
+#endif
+
 #define EMU2149_VOL_DEFAULT 1
 #define EMU2149_VOL_YM2149 0
 #define EMU2149_VOL_AY_3_8910 1
 
 #define PSG_MASK_CH(x) (1<<(x))
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
   typedef struct __PSG
   {
@@ -67,22 +78,19 @@ extern "C"
 
   } PSG;
 
-  void PSG_set_quality (PSG * psg, uint32_t q);
-  void PSG_set_rate (PSG * psg, uint32_t r);
-  PSG *PSG_new (uint32_t clk, uint32_t rate);
-  void PSG_reset (PSG *);
-  void PSG_delete (PSG *);
-  void PSG_writeReg (PSG *, uint32_t reg, uint32_t val);
-  void PSG_writeIO (PSG * psg, uint32_t adr, uint32_t val);
-  uint8_t PSG_readReg (PSG * psg, uint32_t reg);
-  uint8_t PSG_readIO (PSG * psg);
-  int16_t PSG_calc (PSG *);
-  void PSG_setVolumeMode (PSG * psg, int type);
-  uint32_t PSG_setMask (PSG *, uint32_t mask);
-  uint32_t PSG_toggleMask (PSG *, uint32_t mask);
-    
-#ifdef __cplusplus
-}
-#endif
+  VR_EMU_2149_DLLEXPORT void PSG_set_quality (PSG * psg, uint32_t q);
+  VR_EMU_2149_DLLEXPORT   void PSG_set_rate (PSG * psg, uint32_t r);
+  VR_EMU_2149_DLLEXPORT PSG *PSG_new (uint32_t clk, uint32_t rate);
+  VR_EMU_2149_DLLEXPORT void PSG_reset (PSG *);
+  VR_EMU_2149_DLLEXPORT void PSG_delete (PSG *);
+  VR_EMU_2149_DLLEXPORT void PSG_writeReg (PSG *, uint32_t reg, uint32_t val);
+  VR_EMU_2149_DLLEXPORT void PSG_writeIO (PSG * psg, uint32_t adr, uint32_t val);
+  VR_EMU_2149_DLLEXPORT uint8_t PSG_readReg (PSG * psg, uint32_t reg);
+  VR_EMU_2149_DLLEXPORT uint8_t PSG_readIO (PSG * psg);
+  VR_EMU_2149_DLLEXPORT int16_t PSG_calc (PSG *);
+  VR_EMU_2149_DLLEXPORT void PSG_setVolumeMode (PSG * psg, int type);
+  VR_EMU_2149_DLLEXPORT uint32_t PSG_setMask (PSG *, uint32_t mask);
+  VR_EMU_2149_DLLEXPORT uint32_t PSG_toggleMask (PSG *, uint32_t mask);
+
 
 #endif

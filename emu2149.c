@@ -22,10 +22,11 @@
     AY-3-8910 data sheet
     
 *****************************************************************************/
+#include "emu2149.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "emu2149.h"
 
 static uint32_t voltbl[2][32] = {
   {0x00, 0x01, 0x01, 0x02, 0x02, 0x03, 0x03, 0x04, 0x05, 0x06, 0x07, 0x09,
@@ -62,21 +63,21 @@ internal_refresh (PSG * psg)
   }
 }
 
-void
+VR_EMU_2149_DLLEXPORT void
 PSG_set_rate (PSG * psg, uint32_t r)
 {
   psg->rate = r ? r : 44100;
   internal_refresh (psg);
 }
 
-void
+VR_EMU_2149_DLLEXPORT void
 PSG_set_quality (PSG * psg, uint32_t q)
 {
   psg->quality = q;
   internal_refresh (psg);
 }
 
-PSG *
+VR_EMU_2149_DLLEXPORT PSG *
 PSG_new (uint32_t c, uint32_t r)
 {
   PSG *psg;
@@ -93,7 +94,7 @@ PSG_new (uint32_t c, uint32_t r)
   return psg;
 }
 
-void
+VR_EMU_2149_DLLEXPORT void
 PSG_setVolumeMode (PSG * psg, int type)
 {
   switch (type)
@@ -110,7 +111,7 @@ PSG_setVolumeMode (PSG * psg, int type)
   }
 }
 
-uint32_t
+VR_EMU_2149_DLLEXPORT uint32_t
 PSG_setMask (PSG *psg, uint32_t mask)
 {
   uint32_t ret = 0;
@@ -122,7 +123,7 @@ PSG_setMask (PSG *psg, uint32_t mask)
   return ret;
 }
 
-uint32_t
+VR_EMU_2149_DLLEXPORT uint32_t
 PSG_toggleMask (PSG *psg, uint32_t mask)
 {
   uint32_t ret = 0;
@@ -134,7 +135,7 @@ PSG_toggleMask (PSG *psg, uint32_t mask)
   return ret;
 }
 
-void
+VR_EMU_2149_DLLEXPORT void
 PSG_reset (PSG * psg)
 {
   int i;
@@ -170,26 +171,26 @@ PSG_reset (PSG * psg)
 
 }
 
-void
+VR_EMU_2149_DLLEXPORT void
 PSG_delete (PSG * psg)
 {
   free (psg);
 }
 
-uint8_t
+VR_EMU_2149_DLLEXPORT uint8_t
 PSG_readIO (PSG * psg)
 {
   return (uint8_t) (psg->reg[psg->adr]);
 }
 
-uint8_t
+VR_EMU_2149_DLLEXPORT uint8_t
 PSG_readReg (PSG * psg, uint32_t reg)
 {
   return (uint8_t) (psg->reg[reg & 0x1f]);
 
 }
 
-void
+VR_EMU_2149_DLLEXPORT void
 PSG_writeIO (PSG * psg, uint32_t adr, uint32_t val)
 {
   if (adr & 1)
@@ -289,7 +290,7 @@ mix_output(PSG *psg) {
   return (int16_t)(psg->out = psg->ch_out[0] + psg->ch_out[1] + psg->ch_out[2]);
 }
 
-int16_t
+VR_EMU_2149_DLLEXPORT int16_t
 PSG_calc (PSG * psg)
 {
   if (!psg->quality) {
@@ -308,7 +309,7 @@ PSG_calc (PSG * psg)
   return mix_output(psg);
 }
 
-void
+VR_EMU_2149_DLLEXPORT void
 PSG_writeReg (PSG * psg, uint32_t reg, uint32_t val)
 {
   int c;
