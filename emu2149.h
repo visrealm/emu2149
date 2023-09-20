@@ -35,43 +35,46 @@
     uint8_t reg[0x20];
     int32_t out;
 
-    uint32_t clk, rate, base_incr, quality;
+    uint32_t clk, rate, base_incr;
+    uint8_t quality;
+    uint8_t clk_div;
 
-    uint32_t count[3];
-    uint32_t volume[3];
-    uint32_t freq[3];
-    uint32_t edge[3];
-    uint32_t tmask[3];
-    uint32_t nmask[3];
+    uint16_t count[3];
+    uint8_t volume[3];
+    uint16_t freq[3];
+    uint8_t edge[3];
+    uint8_t tmask[3];
+    uint8_t nmask[3];
     uint32_t mask;
 
     uint32_t base_count;
 
-    uint32_t env_volume;
-    uint32_t env_ptr;
-    uint32_t env_face;
+    uint8_t env_ptr;
+    uint8_t env_face;
 
-    uint32_t env_continue;
-    uint32_t env_attack;
-    uint32_t env_alternate;
-    uint32_t env_hold;
-    uint32_t env_pause;
-    uint32_t env_reset;
+    uint8_t env_continue;
+    uint8_t env_attack;
+    uint8_t env_alternate;
+    uint8_t env_hold;
+    uint8_t env_pause;
 
-    uint32_t env_freq;
+    uint16_t env_freq;
     uint32_t env_count;
 
     uint32_t noise_seed;
-    uint32_t noise_count;
-    uint32_t noise_freq;
+    uint8_t noise_scaler;
+    uint8_t noise_count;
+    uint8_t noise_freq;
 
     /* rate converter */
     uint32_t realstep;
     uint32_t psgtime;
     uint32_t psgstep;
 
+    uint32_t freq_limit;
+
     /* I/O Ctrl */
-    uint32_t adr;
+    uint8_t adr;
 
     /* output of channels */
     int16_t ch_out[3];
@@ -79,7 +82,7 @@
   } PSG;
 
   VR_EMU_2149_DLLEXPORT void PSG_set_quality (PSG * psg, uint32_t q);
-  VR_EMU_2149_DLLEXPORT   void PSG_set_rate (PSG * psg, uint32_t r);
+  VR_EMU_2149_DLLEXPORT void PSG_set_rate (PSG * psg, uint32_t r);
   VR_EMU_2149_DLLEXPORT PSG *PSG_new (uint32_t clk, uint32_t rate);
   VR_EMU_2149_DLLEXPORT void PSG_reset (PSG *);
   VR_EMU_2149_DLLEXPORT void PSG_delete (PSG *);
@@ -91,6 +94,9 @@
   VR_EMU_2149_DLLEXPORT void PSG_setVolumeMode (PSG * psg, int type);
   VR_EMU_2149_DLLEXPORT uint32_t PSG_setMask (PSG *, uint32_t mask);
   VR_EMU_2149_DLLEXPORT uint32_t PSG_toggleMask (PSG *, uint32_t mask);
-
+    
+#ifdef __cplusplus
+}
+#endif
 
 #endif
