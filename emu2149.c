@@ -78,7 +78,7 @@ PSG_setClockDivider(PSG *psg, uint8_t enable)
 }
 
 VR_EMU_2149_DLLEXPORT void
-PSG_set_rate (PSG * psg, uint32_t r)
+PSG_set_rate (PSG * psg, uint32_t rate)
 {
   uint32_t r = rate ? rate : 44100;
   if (psg->rate != r) {
@@ -97,7 +97,7 @@ PSG_set_quality (PSG * psg, uint32_t q)
 }
 
 VR_EMU_2149_DLLEXPORT PSG*
-PSG_new (uint32_t c, uint32_t r)
+PSG_new (uint32_t clock, uint32_t rate)
 {
   PSG *psg;
 
