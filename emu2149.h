@@ -21,8 +21,8 @@
 #endif
 
 #define EMU2149_VOL_DEFAULT 1
-#define EMU2149_VOL_YM2149 0
-#define EMU2149_VOL_AY_3_8910 1
+#define EMU2149_VOL_YM2149 1
+#define EMU2149_VOL_AY_3_8910 2
 
 #define PSG_MASK_CH(x) (1<<(x))
 
