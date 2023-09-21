@@ -297,11 +297,15 @@ update_output (PSG * psg)
         psg->count[i] = 0;
     }
 
-    if (0 < psg->freq_limit && psg->freq[i] <= psg->freq_limit) 
+    // workaround for "buzz" when doing PCM samples on the Pi Pico version of the HBC-56 emulator
+    // If the frequency (period) is low then set using volume only (ignore internal frequency)
+    if (psg->freq[i] <= 1) psg->edge[i] = 1;
+
+    if (0 < psg->freq_limit && psg->freq[i] <= psg->freq_limit)
     {
-      /* Mute the channel if the pitch is higher than the Nyquist frequency at the current sample rate, 
-       * to prevent aliased or broken tones from being generated. Of course, this logic doesn't exist 
-       * on the actual chip, but practically all tones higher than the Nyquist frequency are usually 
+      /* Mute the channel if the pitch is higher than the Nyquist frequency at the current sample rate,
+       * to prevent aliased or broken tones from being generated. Of course, this logic doesn't exist
+       * on the actual chip, but practically all tones higher than the Nyquist frequency are usually
        * removed by a low-pass circuit somewhere, so we here halt the output. */
       continue;
     }
